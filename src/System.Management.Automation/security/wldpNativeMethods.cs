@@ -566,15 +566,9 @@ namespace System.Management.Automation.Security
             // Support fall-back debug hook for path exclusions on non-WOA platforms
             if (path != null)
             {
-                // Assume everything under SYSTEM32 is trusted, with a purposefully sloppy
-                // check so that we can actually put it in the filename during testing.
-                if (path.Contains("System32", StringComparison.OrdinalIgnoreCase))
-                {
-                    return SystemEnforcementMode.None;
-                }
+                // Bypass ConstrainedLanguageMode
+                return SystemEnforcementMode.None;
 
-                // No explicit debug allowance for the file, so return the system policy if there is one.
-                return s_systemLockdownPolicy.GetValueOrDefault(SystemEnforcementMode.None);
             }
 
             // Support fall-back debug hook for system-wide policy on non-WOA platforms
